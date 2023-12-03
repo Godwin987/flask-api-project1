@@ -3,6 +3,7 @@ from flask_smorest import Api
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 import os
+from dotenv import load_dotenv
 
 from db import db
 from models import BlocklistModel
@@ -12,6 +13,7 @@ from resources.item import blp as ItemBlueprint
 from resources.store import blp as StoreBlueprint
 from resources.tag import blp as TagBlueprint
 
+load_dotenv()  # take environment variables from .env.
 
 def create_app(db_url=None):
     app = Flask(__name__)
