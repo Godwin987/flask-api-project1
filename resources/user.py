@@ -1,3 +1,6 @@
+import requests
+import os
+from dotenv import load_dotenv
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from flask_jwt_extended import (
@@ -16,6 +19,18 @@ from models import BlocklistModel
 
 
 blp = Blueprint("Users", "users", description="Operations on users")
+
+def send_simple_message(to, subject, body):
+    domain = os.getenv("MAILGUN_DOMAIN")
+    api_key = os.getenv("MAILGUN_API_KEY")
+    return requests.post(
+        f"https://api.mailgun.net/v3/{domain}/messages",
+        auth=("api", f"{api_key}"),
+        data={"from": f"Excited User <mailgun@{domain}>",
+			"to": [to],
+			"subject": subject,
+			"text": body}
+            )
 
 
 @blp.route("/register")
